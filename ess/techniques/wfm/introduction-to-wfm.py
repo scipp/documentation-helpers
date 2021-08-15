@@ -420,26 +420,30 @@ def figure6():
             color='k')
     ax.plot([frames["time_max"].values] * 2, [z_det, z_det + 1.0], lw=1, color='k')
 
-    xmid = (0.5 * ((frames["time_min"] + frames["time_min"] +
-                    frames["delta_time_min"]).data)).values
+    xmid_min = (0.5 * ((frames["time_min"] + frames["time_min"] +
+                        frames["delta_time_min"]).data)).values
+    xmid_max = (0.5 * ((frames["time_max"] + frames["time_max"] -
+                        frames["delta_time_max"]).data)).values
 
-    ax.text(xmid, z_det + 1.0, r'$\lambda_{N=1}$', va='bottom', ha='center', color='C2')
-    ax.text((0.5 * ((frames["time_max"] + frames["time_max"] -
-                     frames["delta_time_max"]).data)).values[0],
+    ax.text(xmid_min[0],
+            z_det + 1.0,
+            r'$\lambda_{N=1}$',
+            va='bottom',
+            ha='center',
+            color='C2')
+    ax.text(xmid_max[0],
             z_det + 1.0,
             r'$\lambda_{2}$',
             va='bottom',
             ha='center',
             color='C0')
-    ax.text((0.5 * ((frames["time_min"] + frames["time_min"] +
-                     frames["delta_time_min"]).data)).values[-1],
+    ax.text(xmid_min[1],
             z_det + 1.0,
             r'$\lambda_{2}$',
             va='bottom',
             ha='center',
             color='C0')
-    ax.text((0.5 * ((frames["time_max"] + frames["time_max"] -
-                     frames["delta_time_max"]).data)).values[-1],
+    ax.text(xmid_max[1],
             z_det + 1.0,
             r'$\lambda_{3}$',
             va='bottom',
