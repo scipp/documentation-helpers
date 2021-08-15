@@ -1,6 +1,5 @@
 import numpy as np
 import scipp as sc
-import scippneutron as scn
 import ess.wfm as wfm
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
@@ -49,8 +48,11 @@ def figure1():
 
 
 def figure2():
+    t_P = sc.scalar(2.860e+03, unit='us')
+    detector_position = sc.vector(value=[0., 0., 60.0], unit='m')
     t_0 = sc.scalar(5.0e+02, unit='us')
     t_A = (t_0 + t_P).value
+    z_det = sc.norm(detector_position).value
     fig, ax = plt.subplots()
     ax.add_patch(
         Rectangle((0, 0), (t_P + t_0).value,
@@ -148,7 +150,6 @@ def figure4():
                                     })
     coords['position'] = sc.vector(value=[0., 0., 15.], unit='m')
     ds = sc.Dataset(coords=coords)
-    frames = wfm.get_frames(ds)
 
     z_det = sc.norm(ds.coords["position"]).value
     t_0 = ds.coords["source_pulse_t_0"].value
@@ -302,6 +303,7 @@ def figure5():
                                     })
     coords['position'] = sc.vector(value=[0., 0., 15.], unit='m')
     ds = sc.Dataset(coords=coords)
+    z_det = sc.norm(ds.coords["position"]).value
     frames = wfm.get_frames(ds)
     fig = wfm.plot.time_distance_diagram(ds)
     ax = fig.get_axes()[0]
@@ -309,7 +311,6 @@ def figure5():
     chopper_wfm1 = coords["choppers"].value["WFMC1"]
     chopper_wfm2 = coords["choppers"].value["WFMC2"]
     z_wfm = sc.norm(0.5 * (chopper_wfm1.position + chopper_wfm2.position)).value
-    xmin = chopper_wfm1.time_open.values
     xmax = chopper_wfm1.time_close.values
     z_foc = 12.0
 
@@ -396,9 +397,7 @@ def figure6():
     chopper_wfm1 = coords["choppers"].value["WFMC1"]
     chopper_wfm2 = coords["choppers"].value["WFMC2"]
     z_wfm = sc.norm(0.5 * (chopper_wfm1.position + chopper_wfm2.position)).value
-    xmin = chopper_wfm1.time_open.values
-    xmax = chopper_wfm1.time_close.values
-    z_foc = 12.0
+    z_det = sc.norm(ds.coords["position"]).value
 
     ax.plot([0, frames["time_max"].values[-1]], [z_wfm] * 2,
             lw=1,
