@@ -4,12 +4,16 @@ import ess.wfm as wfm
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import inspect
+import io
 
 
 class Figure:
-    def __init__(self, func):
+    def __init__(self, func=None, fig=None):
         self._func = func
-        self._fig = self._func()
+        if fig is None:
+            self._fig = self._func()
+        else:
+            self._fig = fig
         self._fig.set_size_inches(6.5, 4.75)
 
     def _ipython_display_(self):
@@ -17,6 +21,13 @@ class Figure:
 
     def show_source(self):
         print(inspect.getsource(self._func))
+
+    def _repr_png_(self):
+        buf = io.BytesIO()
+        self._fig.savefig(buf, format='png', bbox_inches='tight')
+        plt.close(self._fig)
+        buf.seek(0)
+        return buf.getvalue()
 
 
 def figure1():
@@ -457,9 +468,17 @@ def figure6():
     return fig
 
 
-Figure1 = Figure(figure1)
-Figure2 = Figure(figure2)
-Figure3 = Figure(figure3)
-Figure4 = Figure(figure4)
-Figure5 = Figure(figure5)
-Figure6 = Figure(figure6)
+Figure1 = Figure(func=figure1)
+Figure2 = Figure(func=figure2)
+Figure3 = Figure(func=figure3)
+Figure4 = Figure(func=figure4)
+Figure5 = Figure(func=figure5)
+Figure6 = Figure(func=figure6)
+
+if sc.plotting.is_doc_build:
+    setattr(Figure1, "_ipython_display_", None)
+    setattr(Figure2, "_ipython_display_", None)
+    setattr(Figure3, "_ipython_display_", None)
+    setattr(Figure4, "_ipython_display_", None)
+    setattr(Figure5, "_ipython_display_", None)
+    setattr(Figure6, "_ipython_display_", None)
