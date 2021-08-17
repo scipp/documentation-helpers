@@ -37,7 +37,13 @@ def figure1():
 
     fig, ax = plt.subplots()
     ax.add_patch(
-        Rectangle((0, 0), t_P.value, -0.05 * z_det, lw=1, fc='grey', ec='k', zorder=10))
+        Rectangle((0, 0),
+                  t_P.value,
+                  -0.05 * z_det,
+                  lw=1,
+                  fc='grey',
+                  ec='k',
+                  zorder=10))
     # Indicate source pulse and add the duration.
     ax.text(0,
             -0.05 * z_det,
@@ -50,8 +56,18 @@ def figure1():
     # Draw 2 neutron paths
     ax.plot([0.02 * t_P.value, 4.0e3], [0, z_det], lw=2, color='r')
     ax.plot([t_P.value, 4.0e3], [0, z_det], lw=2, color='b')
-    ax.text(3.7e3, 0.5 * z_det, r'$\lambda_{1}$', ha='left', va='center', color='b')
-    ax.text(1.5e3, 0.5 * z_det, r'$\lambda_{2}$', ha='left', va='center', color='r')
+    ax.text(3.7e3,
+            0.5 * z_det,
+            r'$\lambda_{1}$',
+            ha='left',
+            va='center',
+            color='b')
+    ax.text(1.5e3,
+            0.5 * z_det,
+            r'$\lambda_{2}$',
+            ha='left',
+            va='center',
+            color='r')
     ax.set_xlabel("Time [microseconds]")
     ax.set_ylabel("Distance [m]")
     ax.set_title('Figure 1')
@@ -116,7 +132,8 @@ def figure3():
 
     i1 = 5
     i2 = 65
-    ax.fill([x[i1]] + x[i1:i2].tolist() + [x[i2 - 1]], [0] + y[i1:i2].tolist() + [0],
+    ax.fill([x[i1]] + x[i1:i2].tolist() + [x[i2 - 1]],
+            [0] + y[i1:i2].tolist() + [0],
             alpha=0.3)
 
     fs = 15
@@ -124,7 +141,12 @@ def figure3():
     ax.axvline(x[i1], color='k')
     ax.axvline(x[i2 - 1], color='k')
     ax.text(x[i1], 1.58e10, r' $t_{0}$', ha='left', va='top', fontsize=fs)
-    ax.text(x[i2 - 1], 1.58e10, r' $t_{\rm A}$', ha='left', va='top', fontsize=fs)
+    ax.text(x[i2 - 1],
+            1.58e10,
+            r' $t_{\rm A}$',
+            ha='left',
+            va='top',
+            fontsize=fs)
     ax.plot([4.5] * 2, [0, 0.3e10], color='k')
     ax.text(4.5, 0.3e10, r'$t_{\rm B}$', ha='center', va='bottom', fontsize=fs)
     ax.annotate(text='',
@@ -154,18 +176,22 @@ def figure3():
 def figure4():
     coords = wfm.make_fake_beamline(nframes=1,
                                     chopper_positions={
-                                        "WFMC1": sc.vector(value=[0.0, 0.0, 4.5],
-                                                           unit='m'),
-                                        "WFMC2": sc.vector(value=[0.0, 0.0, 5.5],
-                                                           unit='m')
+                                        "WFMC1":
+                                        sc.vector(value=[0.0, 0.0, 4.5],
+                                                  unit='m'),
+                                        "WFMC2":
+                                        sc.vector(value=[0.0, 0.0, 5.5],
+                                                  unit='m')
                                     })
     coords['position'] = sc.vector(value=[0., 0., 15.], unit='m')
     ds = sc.Dataset(coords=coords)
 
     z_det = sc.norm(ds.coords["position"]).value
     t_0 = ds.coords["source_pulse_t_0"].value
-    t_A = (ds.coords["source_pulse_length"] + ds.coords["source_pulse_t_0"]).value
-    t_B = (ds.coords["source_pulse_length"] + 2.0 * ds.coords["source_pulse_t_0"]).value
+    t_A = (ds.coords["source_pulse_length"] +
+           ds.coords["source_pulse_t_0"]).value
+    t_B = (ds.coords["source_pulse_length"] +
+           2.0 * ds.coords["source_pulse_t_0"]).value
     z_foc = 12.0
     tmax_glob = 1.4e4
     height = 0.02
@@ -175,7 +201,12 @@ def figure4():
 
     fig, ax = plt.subplots()
     ax.add_patch(
-        Rectangle((0, 0), t_B, -height * z_det, lw=1, fc='lightgrey', ec='k',
+        Rectangle((0, 0),
+                  t_B,
+                  -height * z_det,
+                  lw=1,
+                  fc='lightgrey',
+                  ec='k',
                   zorder=10))
     ax.add_patch(
         Rectangle((ds.coords["source_pulse_t_0"].value, 0),
@@ -193,12 +224,23 @@ def figure4():
             ha="center",
             va="top",
             fontsize=8)
-    ax.text(t_A, -height * z_det, r"$t_{A}$", ha="center", va="top", fontsize=8)
-    ax.text(t_B, -height * z_det, r"$t_{B}$", ha="center", va="top", fontsize=8)
+    ax.text(t_A,
+            -height * z_det,
+            r"$t_{A}$",
+            ha="center",
+            va="top",
+            fontsize=8)
+    ax.text(t_B,
+            -height * z_det,
+            r"$t_{B}$",
+            ha="center",
+            va="top",
+            fontsize=8)
 
-    z_wfm = sc.norm(0.5 * (chopper_wfm1.position + chopper_wfm2.position)).value
-    xmin = chopper_wfm1.time_open.values
-    xmax = chopper_wfm1.time_close.values
+    z_wfm = sc.norm(0.5 *
+                    (chopper_wfm1.position + chopper_wfm2.position)).value
+    xmin = chopper_wfm1.time_open.values[0]
+    xmax = chopper_wfm1.time_close.values[0]
     dt = xmax - xmin
 
     ax.plot([0, xmin], [z_wfm] * 2, color='k')
@@ -212,9 +254,11 @@ def figure4():
     x_lambda_max = (z_det - int_lambda_max) / slope_lambda_max
     x_lambda_min = (z_det - int_lambda_min) / slope_lambda_min
 
-    ax.plot([t_0, x_lambda_max, x_lambda_max + dt, t_0 + dt], [0.0, z_det, z_det, 0],
+    ax.plot([t_0, x_lambda_max, x_lambda_max + dt, t_0 + dt],
+            [0.0, z_det, z_det, 0],
             color='C0')
-    ax.plot([t_A, x_lambda_min, x_lambda_min - dt, t_A - dt], [0.0, z_det, z_det, 0],
+    ax.plot([t_A, x_lambda_min, x_lambda_min - dt, t_A - dt],
+            [0.0, z_det, z_det, 0],
             color='C2')
 
     x_lambda_max_foc = (z_foc - int_lambda_max) / slope_lambda_max + dt
@@ -227,11 +271,19 @@ def figure4():
     slope_lambda_max_prime = z_wfm / xmax
     int_lambda_max_prime = z_wfm - slope_lambda_max_prime * xmax
     int_lambda_min_prime = z_wfm - slope_lambda_min_prime * xmin
-    x_lambda_max_prime = (z_foc - int_lambda_max_prime) / slope_lambda_max_prime
-    x_lambda_min_prime = (z_foc - int_lambda_min_prime) / slope_lambda_min_prime
+    x_lambda_max_prime = (z_foc -
+                          int_lambda_max_prime) / slope_lambda_max_prime
+    x_lambda_min_prime = (z_foc -
+                          int_lambda_min_prime) / slope_lambda_min_prime
 
-    ax.plot([t_B, x_lambda_min_prime], [0.0, z_foc], color='k', ls='dashed', lw=1)
-    ax.plot([0, x_lambda_max_prime], [0.0, z_foc], color='k', ls='dashed', lw=1)
+    ax.plot([t_B, x_lambda_min_prime], [0.0, z_foc],
+            color='k',
+            ls='dashed',
+            lw=1)
+    ax.plot([0, x_lambda_max_prime], [0.0, z_foc],
+            color='k',
+            ls='dashed',
+            lw=1)
 
     ax.text(x_lambda_min - dt,
             z_det,
@@ -307,10 +359,12 @@ def figure4():
 def figure5():
     coords = wfm.make_fake_beamline(nframes=1,
                                     chopper_positions={
-                                        "WFMC1": sc.vector(value=[0.0, 0.0, 4.5],
-                                                           unit='m'),
-                                        "WFMC2": sc.vector(value=[0.0, 0.0, 5.5],
-                                                           unit='m')
+                                        "WFMC1":
+                                        sc.vector(value=[0.0, 0.0, 4.5],
+                                                  unit='m'),
+                                        "WFMC2":
+                                        sc.vector(value=[0.0, 0.0, 5.5],
+                                                  unit='m')
                                     })
     coords['position'] = sc.vector(value=[0., 0., 15.], unit='m')
     ds = sc.Dataset(coords=coords)
@@ -321,31 +375,47 @@ def figure5():
 
     chopper_wfm1 = coords["choppers"].value["WFMC1"]
     chopper_wfm2 = coords["choppers"].value["WFMC2"]
-    z_wfm = sc.norm(0.5 * (chopper_wfm1.position + chopper_wfm2.position)).value
-    xmax = chopper_wfm1.time_close.values
+    z_wfm = sc.norm(0.5 *
+                    (chopper_wfm1.position + chopper_wfm2.position)).value
+    xmax = chopper_wfm1.time_close.values[0]
     z_foc = 12.0
 
     ax.plot([xmax] * 2, [z_wfm, z_det + 1.0], lw=1, color='k')
-    ax.plot([0, frames["time_max"].values], [z_wfm] * 2, lw=1, color='k', ls='dotted')
-    ax.text(frames["time_max"].values, z_wfm, r'$z_{\rm WFM}$', ha='left', va='center')
+    ax.plot([0, frames["time_max"].values[0]], [z_wfm] * 2,
+            lw=1,
+            color='k',
+            ls='dotted')
+    ax.text(frames["time_max"].values[0],
+            z_wfm,
+            r'$z_{\rm WFM}$',
+            ha='left',
+            va='center')
 
     ax.plot([0, 5770.5], [z_foc] * 2, color='k')
-    ax.plot([9578.9, frames["time_max"].values], [z_foc] * 2, color='k')
-    ax.text(frames["time_max"].values, z_foc, 'FOC', ha='right', va='bottom')
+    ax.plot([9578.9, frames["time_max"].values[0]], [z_foc] * 2, color='k')
+    ax.text(frames["time_max"].values[0],
+            z_foc,
+            'FOC',
+            ha='right',
+            va='bottom')
 
-    ax.plot([(frames["time_min"] + frames["delta_time_min"]).values] * 2,
+    ax.plot([(frames["time_min"] + frames["delta_time_min"]).values[0]] * 2,
             [z_det, z_det + 1.0],
             lw=1,
             color='k')
-    ax.plot([frames["time_min"].values] * 2, [z_det, z_det + 1.0], lw=1, color='k')
-    ax.plot([(frames["time_max"] - frames["delta_time_max"]).values] * 2,
+    ax.plot([frames["time_min"].values[0]] * 2, [z_det, z_det + 1.0],
+            lw=1,
+            color='k')
+    ax.plot([(frames["time_max"] - frames["delta_time_max"]).values[0]] * 2,
             [z_det, z_det + 1.0],
             lw=1,
             color='k')
-    ax.plot([frames["time_max"].values] * 2, [z_det, z_det + 1.0], lw=1, color='k')
+    ax.plot([frames["time_max"].values[0]] * 2, [z_det, z_det + 1.0],
+            lw=1,
+            color='k')
 
     xmid = (0.5 * ((frames["time_min"] + frames["time_min"] +
-                    frames["delta_time_min"]).data)).values
+                    frames["delta_time_min"]).data)).values[0]
     ax.plot([xmid] * 2, [z_det, z_det + 0.5], lw=1, color='k')
 
     ax.annotate(text='',
@@ -394,10 +464,12 @@ def figure5():
 def figure6():
     coords = wfm.make_fake_beamline(nframes=2,
                                     chopper_positions={
-                                        "WFMC1": sc.vector(value=[0.0, 0.0, 4.5],
-                                                           unit='m'),
-                                        "WFMC2": sc.vector(value=[0.0, 0.0, 5.5],
-                                                           unit='m')
+                                        "WFMC1":
+                                        sc.vector(value=[0.0, 0.0, 4.5],
+                                                  unit='m'),
+                                        "WFMC2":
+                                        sc.vector(value=[0.0, 0.0, 5.5],
+                                                  unit='m')
                                     })
     coords['position'] = sc.vector(value=[0., 0., 15.], unit='m')
     ds = sc.Dataset(coords=coords)
@@ -407,7 +479,8 @@ def figure6():
 
     chopper_wfm1 = coords["choppers"].value["WFMC1"]
     chopper_wfm2 = coords["choppers"].value["WFMC2"]
-    z_wfm = sc.norm(0.5 * (chopper_wfm1.position + chopper_wfm2.position)).value
+    z_wfm = sc.norm(0.5 *
+                    (chopper_wfm1.position + chopper_wfm2.position)).value
     z_det = sc.norm(ds.coords["position"]).value
 
     ax.plot([0, frames["time_max"].values[-1]], [z_wfm] * 2,
@@ -424,12 +497,16 @@ def figure6():
             [z_det, z_det + 1.0],
             lw=1,
             color='k')
-    ax.plot([frames["time_min"].values] * 2, [z_det, z_det + 1.0], lw=1, color='k')
+    ax.plot([frames["time_min"].values] * 2, [z_det, z_det + 1.0],
+            lw=1,
+            color='k')
     ax.plot([(frames["time_max"] - frames["delta_time_max"]).values] * 2,
             [z_det, z_det + 1.0],
             lw=1,
             color='k')
-    ax.plot([frames["time_max"].values] * 2, [z_det, z_det + 1.0], lw=1, color='k')
+    ax.plot([frames["time_max"].values] * 2, [z_det, z_det + 1.0],
+            lw=1,
+            color='k')
 
     xmid_min = (0.5 * ((frames["time_min"] + frames["time_min"] +
                         frames["delta_time_min"]).data)).values
