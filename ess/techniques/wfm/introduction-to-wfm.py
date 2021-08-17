@@ -542,6 +542,7 @@ def figure6():
     ax.lines[8].set_color('C0')
     ax.patches[2].set_color('mediumpurple')
     ax.patches[5].set_color('grey')
+    ax.set_title('Figure 6')
     return fig
 
 
