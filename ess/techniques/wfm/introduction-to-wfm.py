@@ -453,6 +453,11 @@ def figure5():
             ha='left',
             va='top',
             color='C0')
+    ax.annotate(text='',
+                xy=(0, 14),
+                xytext=(xmax, 14),
+                arrowprops=dict(arrowstyle='<->'))
+    ax.text(0.5 * xmax, 14, r'$t_{\rm WFM}(N)$', va='top', ha='center')
 
     ax.lines[4].set_color('C2')
     ax.patches[2].set_color('mediumpurple')
